@@ -2,13 +2,13 @@ def parse_mission(raw_line):
     fields = [piece.strip() for piece in raw_line.split(',')]
     if len(fields) != 6:
         return None
+    for field in fields[:4]:
+        if not field:
+            return None
     if not fields[4].isdigit():
         return None
     if not fields[5].replace('.', '', 1).isdigit():
         return None
-    for field in fields[0:4]:
-        if not field:
-            return None
     return {
         "mission_id": fields[0],
         "pickup_airport": fields[1],
