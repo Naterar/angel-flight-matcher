@@ -37,3 +37,10 @@ def load_intake(file_path):
 missions, rejects = load_intake("data/missions.csv")
 print(missions)
 print(rejects)
+
+
+def parse_pilot(raw_line):
+    fields = [piece.strip() for piece in raw_line.split(',')]
+    if len(fields) != 6:
+        return None
+    for field in fields[:1]:
