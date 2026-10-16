@@ -2,6 +2,13 @@ def parse_mission(raw_line):
     fields = [piece.strip() for piece in raw_line.split(',')]
     if len(fields) != 6:
         return None
+    if not fields[4].isdigit():
+        return None
+    if not fields[5].replace('.', '', 1).isdigit():
+        return None
+    for field in fields[0:4]:
+        if not field:
+            return None
     return {
         "mission_id": fields[0],
         "pickup_airport": fields[1],
@@ -11,12 +18,22 @@ def parse_mission(raw_line):
         "total_weight": float(fields[5]),
     }
 
-### TESTING###
-# print(parse_mission("M-001, KSGJ, KJAX, 2026-11-04, 2, 340"))
-# print(parse_mission("M-002, KSGJ, KJAX,"))
-# print(parse_mission("M-003, , KJAX, 2026-11-04, 2, 340"))
-# print(parse_mission("M-004, KSGJ, KJAX, 2026-11-04, two, 340"))
-# print(parse_mission(""))
-# print(parse_mission("M-005, KSGJ, KJAX, 2026-11-04, 2, abc"))
-# print(parse_mission(12345))
-# print(parse_mission("M-006, KSGJ, KJAX, 2026-11-04, -2, 340"))
+
+def load_intake(file_path):
+    good_missions = []
+    reject_count = 0
+
+    with open(file_path) as intake_file:
+        for line in intake_file:
+            mission = parse_mission(line)
+            if mission is not None:
+                good_missions.append(mission)
+            else:
+                reject_count += 1
+
+    return good_missions, reject_count
+
+
+missions, rejects = load_intake("data/missions.csv")
+print(missions)
+print(rejects)

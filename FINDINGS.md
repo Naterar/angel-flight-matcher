@@ -17,3 +17,14 @@ record with no departure airport does not.
 
 Deferred to Exercise 2, where rejected rows are counted and the
 rejection reason has somewhere to go.
+
+## Exercise 2 — load_intake()
+
+| Input            | Result                                                         | Class        |
+| ---------------- | -------------------------------------------------------------- | ------------ |
+| Missing file     | `FileNotFoundError`, traceback                                 | Loud failure |
+| One bad row in 8 | **All 8 rows lost** — exception kills the loop before `return` | **Critical** |
+
+A single malformed row anywhere in the file destroys every valid row
+parsed before it. The function has no way to skip a bad row and
+continue.
