@@ -1,6 +1,5 @@
-from mission_loader import parse_mission
+from src.mission_loader import parse_mission
 import sys
-sys.path.append("src")
 
 
 def test_parse_mission_good_row():

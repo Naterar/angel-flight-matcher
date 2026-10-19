@@ -1,3 +1,6 @@
+from src.mission_loader import parse_mission
+from src.extract import validate_extraction
+
 name: tests
 
 on: [push, pull_request]

@@ -1,6 +1,5 @@
-from extract import validate_extraction
+from src.extract import validate_extraction
 import sys
-sys.path.append("src")
 
 
 def test_validate_extraction_rejects_null_field():
