@@ -6,8 +6,7 @@ from anthropic import Anthropic
 load_dotenv()
 client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
-EXTRACT_PROMPT = EXTRACTION_PROMPT = """
-
+EXTRACTION_PROMPT = """
 You are a flight mission coordination assistant. Extract mission parameters from an unstructured coordinator email into a single valid JSON object.
 
 ### Extraction rules
@@ -49,12 +48,13 @@ Output:
 ### Input email
 
 """
-with open("data/sample_request.txt") as request_file:
-    email_text = request_file.read()
+
+
+def extract_mission(email_text):
     response = client.messages.create(
         model="claude-sonnet-4-5",
         max_tokens=500,
-        messages=[{"role": "user", "content": EXTRACT_PROMPT + email_text}]
+        messages=[{"role": "user", "content": EXTRACTION_PROMPT + email_text}]
     )
 
     raw_output = response.content[0].text
@@ -64,8 +64,7 @@ with open("data/sample_request.txt") as request_file:
     cleaned = cleaned.removesuffix("```")
     cleaned = cleaned.strip()
 
-    mission = json.loads(cleaned)
-    print(mission)
+    return json.loads(cleaned)
 
 
 def validate_extraction(mission):
@@ -78,5 +77,12 @@ def validate_extraction(mission):
     return mission
 
 
-validated = validate_extraction(mission)
-print(validated)
+if __name__ == "__main__":
+    with open("data/sample_request.txt") as request_file:
+        email_text = request_file.read()
+
+    mission = extract_mission(email_text)
+    print(mission)
+
+    validated = validate_extraction(mission)
+    print(validated)
