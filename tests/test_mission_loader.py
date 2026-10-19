@@ -1,5 +1,4 @@
 from src.mission_loader import parse_mission
-import sys
 
 
 def test_parse_mission_good_row():
