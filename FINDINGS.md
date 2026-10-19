@@ -42,3 +42,19 @@ collapse uniform rejections.
 Date comparison uses string equality after splitting on ";". It does not
 understand date ranges, nor that a pilot free on 2026-10-04 might also
 fly 2026-10-05.
+
+## Exercise 4 — LLM extraction with validation
+
+| Behavior                          | Result                                  |
+| --------------------------------- | --------------------------------------- |
+| Field extraction, 7 fields        | 6 correct, 1 correctly null             |
+| Null for unstated year ("nov 12") | Rule obeyed                             |
+| ICAO normalized to uppercase      | Correct                                 |
+| "No markdown fences" instruction  | **Ignored** — output wrapped in ```json |
+| Validation caught the null date   | Rejected before reaching the matcher    |
+
+The fence instruction was explicit and was not followed. Output is
+cleaned in code rather than trusted to the prompt.
+
+Open: the cleaner removes "`json" specifically. A bare "`" fence
+would pass through and break json.loads().
