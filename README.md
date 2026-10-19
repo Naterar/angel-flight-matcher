@@ -1,5 +1,7 @@
 # Angel Flight Matcher
 
+![tests](https://github.com/Naterar/angel-flight-matcher/actions/workflows/tests.yml/badge.svg)
+
 Matches volunteer medical-transport missions to available pilots, and returns a specific reason for every pilot who can't fly it.
 
 Built on synthetic data. Not affiliated with or endorsed by Angel Flight West.
