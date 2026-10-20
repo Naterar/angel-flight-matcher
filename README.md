@@ -84,6 +84,15 @@ One broken thing per test, so a pass identifies which guard caught it.
 
 The extraction function is not tested against the live API. Model output is non-deterministic — what gets tested is the cleaning, the parsing, and the validation, all of which are deterministic.
 
+## TypeScript port
+
+The parser reimplemented in TypeScript, enforcing the same contract. The
+guards translate directly — `len()` to `.length`, `[:4]` to `.slice(0, 4)`,
+`None` to `null` — with one difference worth noting: JavaScript has a single
+number type, so the int/float distinction the Python version enforces has no
+equivalent. `Number("")` also returns `0` rather than failing, so an empty
+numeric field needs an explicit guard that `isNaN()` alone won't provide.
+
 ## Notes on working with the model
 
 The prompt instructs Claude explicitly to return raw JSON with no markdown code fences. It wrapped the output in fences anyway. Extraction was otherwise correct: seven fields, uppercase ICAO codes, and a `null` date because the source email said "nov 12" without a year.
@@ -104,6 +113,8 @@ angel-flight-matcher/
 │   ├── pilots.csv           synthetic pilot roster
 │   └── sample_request.txt   free-text coordinator email
 ├── tests/
+├── typescript/
+│   └── src/parseMission.ts   same contract, TypeScript implementation
 ├── FINDINGS.md
 └── README.md
 ```
